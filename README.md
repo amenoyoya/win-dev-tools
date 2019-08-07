@@ -2,7 +2,7 @@
 
 ## What's this?
 
-Windowsで開発するときのコマンドラインツール詰め合わせ
+Windowsで開発するときの個人的コマンドラインツール詰め合わせ
 
 ***
 
@@ -12,5 +12,21 @@ Windowsで開発するときのコマンドラインツール詰め合わせ
 - OS: Windows 10 Pro x64
 - Editor: VSCode
     - https://code.visualstudio.com/
-- CLI: Git Bash (Git for Windows)
+- CLI: Git bash (Git for Windows)
     - https://gitforwindows.org/
+
+### Installation
+```bash
+# このリポジトリをclone
+# C:ドライブ直下にダウンロードするのがおすすめ
+$ cd /c
+$ git clone https://github.com/amenoyoya/win-dev-tools.git
+```
+
+- 以下、`C:`ドライブ直下に`win-dev-tools`ディレクトリがある想定でセットアップを行う
+- `Win + Pause/Break`キーを押して システム設定のコントロールパネル起動
+    - システムの詳細設定 > 環境変数
+        - システム環境変数の`PATH`に以下のパスを追加
+            1. `C:\win-dev-tools\bin`
+            2. `C:\win-dev-tools\bin\nodejs`
+            3. `C:\win-dev-tools\bin\php-7.3.8`
