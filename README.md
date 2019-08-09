@@ -15,6 +15,16 @@ Windowsで開発するときの個人的コマンドラインツール詰め合�
 - CLI: Git bash (Git for Windows)
     - https://gitforwindows.org/
 
+### Preparation
+- VSCode と Git for Windows をインストール
+    - エクスプローラ拡張も有効化しておくと便利
+- VSCode設定(`Ctrl + ,`)
+    - ※ 直接`settings.json`を開いて [vscode-settings.jsonc](./vscode-settings.jsonc)の内容をコピペしてもOK
+    - `files.eol`:
+        - 改行設定 => `\n` (Unix系ツールは`\r`が入っていると動作がおかしくなるものが多いため)
+    - `terminal.integrated.shell.windows`:
+        - 内部ターミナル => `C:\Program Files\Git\bin\bash.exe` (Git for Windows のインストール先ディレクトリ)
+
 ### Installation
 ```bash
 # このリポジトリをclone
