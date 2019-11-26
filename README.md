@@ -38,6 +38,17 @@ if [ -f ~/.bashrc ]; then
 fi
 ```
 
+#### Git設定
+Git bash で以下の設定を行う
+
+```bash
+$ git config --global user.name <username> # 好きなユーザ名を設定
+$ git config --global user.email <mail@example.dev> # 自分のメールアドレスを設定
+$ git config --global core.editor code # VSCodeをデフォルトエディターに
+$ git config --global core.autoCRLF false # 改行コードを勝手に修正するのを無効化
+$ git config --global core.quotepath false # 日本語ファイル名等をquoteするのを無効化
+```
+
 ### Installation
 ```bash
 # このリポジトリをclone
