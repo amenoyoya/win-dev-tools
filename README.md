@@ -147,3 +147,6 @@ Retype new UNIX password: # パスワードをもう一度入力
 # 各種をアップデート
 $ sudo apt update && sudo apt upgrade -y
 ```
+
+### その他
+その他ツールのインストールは [other_installation.md](./other_installation.md) を参照
