@@ -27,14 +27,16 @@ Windowsで開発するときの個人的コマンドラインツール詰め合�
         - 改行設定 => `\n` (Unix系ツールは`\r`が入っていると動作がおかしくなるものが多いため)
     - `terminal.integrated.shell.windows`:
         - 内部ターミナル => `C:\\Program Files\\Git\\bin\\bash.exe` (Git for Windows のインストール先ディレクトリ)
-- Git bash 起動時にホームディレクトリの `.bashrc` を読み込むように設定
-    - **C:\Program Files\Git\etc\bash.bashrc**
-        ```diff
-        # System-wide bashrc file
-        + if [ -f ~/.bashrc ]; then
-        +     . ~/.bashrc
-        + fi
-        ```
+
+#### Git bash 起動時にホームディレクトリの .bashrc を読み込むように設定
+`C:\Program Files\Git\etc\bash.bashrc` に以下の設定を追加
+
+```bash
+# System-wide bashrc file
+if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+fi
+```
 
 ### Installation
 ```bash
@@ -44,31 +46,70 @@ $ cd /c
 $ git clone https://github.com/amenoyoya/win-dev-tools.git
 ```
 
-- 以下、`C:`ドライブ直下に`win-dev-tools`ディレクトリがある想定でセットアップを行う
-- `Win + Pause/Break`キーを押して システム設定のコントロールパネル起動
-    - システムの詳細設定 > 環境変数
-        - システム環境変数の`PATH`に以下のパスを追加
-            1. `C:\win-dev-tools\bin`
-            2. `C:\win-dev-tools\bin\nodejs`
-            3. `C:\win-dev-tools\bin\php-7.3.8`
+以下、`C:`ドライブ直下に`win-dev-tools`ディレクトリがある想定でセットアップを行う
 
-### Miniconda3
-- Python環境としてMiniconda3をインストールする
-- 管理者権限のPowerShellで以下を実行
-    ```powershell
-    # Windows用パッケージマネージャとして chocolatey 導入
-    > Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+`Win + Pause/Break`キー => システム設定のコントロールパネル起動
 
-    # chocolatey バージョン確認
-    > choco -v
-    0.10.15
+- システムの詳細設定 > 環境変数
+    - システム環境変数の`PATH`に以下のパスを追加
+        1. `C:\win-dev-tools\bin`
+        2. `C:\win-dev-tools\bin\nodejs`
+        3. `C:\win-dev-tools\bin\php-7.3.8`
 
-    # miniconda3 インストール
-    > choco install -y miniconda3
-    # -> C:\tools\miniconda3 にインストールされる
-    ```
-- bash起動時に Pythonへのパスを通すように設定
-    - **C:/Users/ユーザー名/.bashrc**
-        ```bash
-        source /c/tools/miniconda3/Scripts/activate
-        ```
+### Anaconda3
+Python環境としてAnaconda3をインストールする
+
+`Win + X`キー |> `A`キー => 管理者権限のPowerShell起動
+
+```powershell
+# Windows用パッケージマネージャとして chocolatey 導入
+> Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# chocolatey バージョン確認
+> choco -v
+0.10.15
+
+# anaconda3 インストール
+> choco install -y anaconda3
+# -> C:\tools\Anaconda3 にインストールされる
+```
+
+### bash設定
+Git bash で以下を実行
+
+```bash
+# C:\users\<User>\.bashrc に以下の設定を記述
+# - Anaconda3アクティベーションスクリプト読み込み: Pythonを使用可能に
+# - プロンプトに Anaconda環境とGitブランチを表示
+## ヒアドキュメント用のアンカー(EOS)を("EOS" or 'EOS' or \EOS)にするとドキュメント内の変数展開をエスケープしてくれる
+$ tee ~/.bashrc <<\EOS
+source /c/tools/Anaconda3/Scripts/activate
+
+function parse_git_branch {
+    git branch --no-color 2> /dev/null | grep '^\*' | sed -e 's/^\*\s*//'
+}
+
+function display_git_branch {
+    local branch=`parse_git_branch`
+    if [ "${branch}" != "" ]; then
+        echo " (${branch})"
+    fi
+}
+
+function parse_anaconda_env {
+    conda info -e | grep '\*' | awk '{print $1}'
+}
+
+function display_anaconda_env {
+    local env=`parse_anaconda_env`
+    if [ "${env}" != "" ]; then
+        echo "(${env}) "
+    fi
+}
+
+PS1='\[\e[1;36m\]`display_anaconda_env`\[\e[1;32m\]\u@\h \[\e[1;33m\]\w\[\e[1;34m\]`display_git_branch`\[\e[0;37m\]\n\$ '
+EOS
+
+# 現在の bash で設定を反映したい場合は ~/.bashrc を読み込む
+$ source ~/.bashrc
+```
