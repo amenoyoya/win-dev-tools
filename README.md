@@ -159,5 +159,40 @@ Retype new UNIX password: # パスワードをもう一度入力
 $ sudo apt update && sudo apt upgrade -y
 ```
 
+### WSL2のインストール
+WSL1 では、完全にすべてのLinuxプログラムが動作するわけではない
+
+例えば、複数のDockerコンテナを管理する docker-compose などは動作しない
+
+しかしながら、2020年春提供予定の WSL2 では docker-compose 等も動作するよう改良されているとのことである
+
+2019年12月時点では、Insider Program（バージョン: 18917以降）でしか提供されていないため、利用するには Windows Insider Program への参加が必要である（**動作未保障のためバックアップ必須**）
+
+#### Windows Insider Program 参加
+- Windowsスタートメニュー > 設定 > 更新とセキュリティ
+    - Windows Insider Program に参加する
+        - Microsoftアカウントでのログイン必須のため、アカウントを持っていない場合は新規作成する
+        - Insider Preview ビルドの取得に時間がかかるため、場合によっては数時間待機する
+
+![windows_insider_program.png](./img/windows_insider_program.png)
+
+![windows_insider_preview.png](./img/windows_insider_preview.png)
+
+#### WSL2 の有効化
+`Win + X` |> `A`キー => 管理者権限PowerShell起動
+
+```powershell
+# WSL2 を有効化する
+> Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+この操作を完了するために、今すぐコンピューターを再起動しますか?
+[Y] Yes  [N] No  [?] ヘルプ (既定値は "Y"): # そのままENTERして再起動
+
+# 再起動が完了したらWSLのバージョン確認（1と2は同居可能）
+> wsl -l -v
+
+# 先にインストールしていた Ubuntu 18.04 を WSL2 環境にセットする
+> wsl --set-version Ubuntu-18.04 2
+```
+
 ### その他
 その他ツールのインストールは [other_installation.md](./other_installation.md) を参照
