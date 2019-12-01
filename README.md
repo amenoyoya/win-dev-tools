@@ -172,11 +172,14 @@ WSL1 では、完全にすべてのLinuxプログラムが動作するわけで�
 - Windowsスタートメニュー > 設定 > 更新とセキュリティ
     - Windows Insider Program に参加する
         - Microsoftアカウントでのログイン必須のため、アカウントを持っていない場合は新規作成する
-        - Insider Preview ビルドの取得に時間がかかるため、場合によっては数時間待機する
 
 ![windows_insider_program.png](./img/windows_insider_program.png)
 
-![windows_insider_preview.png](./img/windows_insider_preview.png)
+- どのようなコンテンツの受け取りを希望されますか？
+    - => `Windowsのアクティブな開発` を選択
+- プレビュービルドを受け取る頻度はどの程度を希望されますか？
+    - `スロー` を選択
+- 再起動
 
 #### WSL2 の有効化
 `Win + X` |> `A`キー => 管理者権限PowerShell起動
