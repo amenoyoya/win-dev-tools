@@ -67,8 +67,8 @@ $ git clone https://github.com/amenoyoya/win-dev-tools.git
         2. `C:\win-dev-tools\bin\nodejs`
         3. `C:\win-dev-tools\bin\php-7.3.8`
 
-### Anaconda3
-Python環境としてAnaconda3をインストールする
+### Julia + Python(Anaconda) 環境構築
+Julia と PyCall（Python／Anaconda3）とインストールする
 
 `Win + X`キー |> `A`キー => 管理者権限のPowerShell起動
 
@@ -80,9 +80,12 @@ Python環境としてAnaconda3をインストールする
 > choco -v
 0.10.15
 
-# anaconda3 インストール
-> choco install -y anaconda3
-# -> C:\tools\Anaconda3 にインストールされる
+# julia インストール
+> choco install -y julia
+# => /c/ProgramData/chocolatey/bin/julia.exe にインストールされる
+
+# PyCall パッケージインストール
+> julia -e 'using Pkg; Pkg.add("PyCall");'
 ```
 
 ### bash設定
@@ -91,10 +94,10 @@ Git bash で以下を実行
 ```bash
 # C:\users\<User>\.bashrc に以下の設定を記述
 # - Anaconda3アクティベーションスクリプト読み込み: Pythonを使用可能に
-# - プロンプトに Anaconda環境とGitブランチを表示
+# - プロンプトにGitブランチを表示
 ## ヒアドキュメント用のアンカー(EOS)を("EOS" or 'EOS' or \EOS)にするとドキュメント内の変数展開をエスケープしてくれる
 $ tee ~/.bashrc <<\EOS
-source /c/tools/Anaconda3/Scripts/activate
+source ~/.julia/conda/3/Scripts/activate
 
 function parse_git_branch {
     git branch --no-color 2> /dev/null | grep '^\*' | sed -e 's/^\*\s*//'
@@ -107,18 +110,7 @@ function display_git_branch {
     fi
 }
 
-function parse_anaconda_env {
-    conda info -e | grep '\*' | awk '{print $1}'
-}
-
-function display_anaconda_env {
-    local env=`parse_anaconda_env`
-    if [ "${env}" != "" ]; then
-        echo "(${env}) "
-    fi
-}
-
-PS1='\[\e[1;36m\]`display_anaconda_env`\[\e[1;32m\]\u@\h \[\e[1;33m\]\w\[\e[1;34m\]`display_git_branch`\[\e[0;37m\]\n\$ '
+PS1='\[\e[1;32m\]\u@\h \[\e[1;33m\]\w\[\e[1;34m\]`display_git_branch`\[\e[0;37m\]\n\$ '
 EOS
 
 # 現在の bash で設定を反映したい場合は ~/.bashrc を読み込む
