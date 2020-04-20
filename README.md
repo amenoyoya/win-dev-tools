@@ -193,9 +193,19 @@ WSL2 を使うためには、ビルドバージョン 18917以降のWindows10で
 
 # 再起動が完了したらWSLのバージョン確認（1と2は同居可能）
 > wsl -l -v
+  NAME            STATE           VERSION
+* Ubuntu-18.04    Stopped         1
 
-# 先にインストールしていた Ubuntu 18.04 を WSL2 環境にセットする
+# 先にインストールしていた Ubuntu 18.04 を WSL2 環境に変換する
 > wsl --set-version Ubuntu-18.04 2
+
+# 「WSL 2 を実行するには、カーネル コンポーネントの更新が必要です。」というエラーが出た場合
+## => wsl_update_x64.msi をインストールして再実行する
+
+# 変換が完了したらバージョン確認
+> wsl -l -v
+  NAME            STATE           VERSION
+* Ubuntu-18.04    Stopped         2
 ```
 
 ### その他
