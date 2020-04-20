@@ -149,6 +149,9 @@ Retype new UNIX password: # パスワードをもう一度入力
 
 # 各種をアップデート
 $ sudo apt update && sudo apt upgrade -y
+
+# 開発ツール導入
+$ sudo apt install -y build-essential git curl vim ruby openjdk-11-jdk-headless
 ```
 
 ### WSL2のインストール
