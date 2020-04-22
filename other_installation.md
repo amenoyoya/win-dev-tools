@@ -118,3 +118,74 @@ vhostを有効化するために、`Win + X` |> `A` キー => 管理者権限Pow
 ここまで実行し https://web.local/ にアクセスする
 
 これで、phpinfo の内容が表示されたらOK
+
+***
+
+## msys2
+
+Windows上で C++ 製の OSSツールを使いたい場合、ソースコードからのビルドが必要になることが多々ある
+
+そういった場合、VisualStudio を使うより、msys2 のような GNU 系コンパイラ環境を使った方が良いことが多い
+
+### Installation
+`Win + X` |> `A` => 管理者権限PowerShell起動
+
+```powershell
+# chocolatey で msys2 インストール
+> choco install -y msys2
+
+## => 64bit環境の場合 C:\tools\msys64\ にインストールされる
+## => PATHは自動的に通されるため、PowerShellを開きなおす
+```
+
+### pgModeler のビルド
+動作確認を兼ねて、OSSのデータモデリングツールである pgModeler をビルドしてみる
+
+```powershell
+# msys2/mingw64 起動
+> mingw64
+```
+
+```bash
+# pacman パッケージマネージャで msys2 コアシステム更新
+$ pacman -Suy
+
+# ビルドに必要なパッケージをインストール
+$ pacman -S git base-devel mingw-w64-x86_64-make mingw-w64-x86_64-gcc mingw-w64-x86_64-postgresql mingw-w64-x86_64-qt5
+
+## => 3GB 近くあるためしばらく待機
+
+# GitHub から pgModeler ソースコード取得
+$ git clone https://github.com/pgmodeler/pgmodeler.git
+$ cd pgmodeler/
+
+# 開発バージョンを使う場合は develop ブランチに checkout
+# $ git checkout develop
+
+# コンパイラ設定を修正
+$ sed -i -e 's/C:\/msys64/C:\/tools\/msys64/g' pgmodeler.pri
+
+# pgmodeler インストール先ディレクトリ作成
+## ここでは C:\tools\pgmodeler\ にインストールすることを想定
+$ INSTALLATION_ROOT=/c/tools/pgmodeler/
+$ mkdir -p $INSTALLATION_ROOT
+
+# pgmodeler ビルド＆インストール
+$ qmake -r CONFIG+=release PREFIX=$INSTALLATION_ROOT pgmodeler.pro
+$ make # CPUスペックにもよるが 1時間近くかかるかもしれない
+$ make install
+$ cd $INSTALLATION_ROOT
+$ windeployqt pgmodeler.exe pgmodeler_ui.dll
+
+# 依存ライブラリをコピー
+$ cd $MSYS2_ROOT/mingw64/bin/
+$ cp libicuin*.dll libicuuc*.dll libicudt*.dll libpcre2-16-0.dll libharfbuzz-0.dll \
+    libpng16-16.dll libfreetype-6.dll libgraphite2.dll libglib-2.0-0.dll libpcre-1.dll \
+    libbz2-1.dll libssl-1_1-x64.dll libcrypto-1_1-x64.dll libgcc_s_seh-1.dll \
+    libstdc++-6.dll libwinpthread-1.dll zlib1.dll libpq.dll libxml2-2.dll liblzma-5.dll \
+    libiconv-2.dll libintl-8.dll $INSTALLATION_ROOT
+
+# 起動
+$ cd $INSTALLATION_ROOT
+$ ./pgmodeler
+```
