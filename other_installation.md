@@ -183,7 +183,7 @@ $ cp libicuin*.dll libicuuc*.dll libicudt*.dll libpcre2-16-0.dll libharfbuzz-0.d
     libpng16-16.dll libfreetype-6.dll libgraphite2.dll libglib-2.0-0.dll libpcre-1.dll \
     libbz2-1.dll libssl-1_1-x64.dll libcrypto-1_1-x64.dll libgcc_s_seh-1.dll \
     libstdc++-6.dll libwinpthread-1.dll zlib1.dll libpq.dll libxml2-2.dll liblzma-5.dll \
-    libiconv-2.dll libintl-8.dll $INSTALLATION_ROOT
+    libiconv-2.dll libintl-8.dll libdouble-conversion.dll libzstd.dll $INSTALLATION_ROOT
 
 # 起動
 $ cd $INSTALLATION_ROOT
