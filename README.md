@@ -12,7 +12,10 @@ Windowsで開発するときの個人的コマンドラインツール詰め合�
 - OS: Windows 10 64bit
 - Editor: VSCode
 - PackageManager: Chocolatey
-- CLI: msys2 bash
+- CLI:
+    - msys2 bash
+    - Git for Windows
+        - ※ msys2 bash 環境の Git は VSCode との相性が悪いため別途インストールする
 
 ### 各種ソフトウェアの導入
 `Win + X` |> `A` キー => 管理者権限 PowerShell 起動
@@ -28,6 +31,10 @@ Windowsで開発するときの個人的コマンドラインツール詰め合�
 # VSCode インストール
 > choco install -y vscode
 ## => "C:\Program Files\Microsoft VS Code\" にインストールされる
+
+# Git for Windows インストール
+> choco install -y git
+## => "C:\Program Files\Git\" にインストールされる
 
 # msys2 インストール
 > chovo isntall -y msys2
@@ -52,15 +59,12 @@ Windowsで開発するときの個人的コマンドラインツール詰め合�
 - VSCode設定(`Ctrl + ,`)
     - 直接 `settings.json` を開いて [vscode-settings.jsonc](./vscode-settings.jsonc) の内容をコピペする
 
-### Git 導入
+### Git 設定
 VSCode で `Ctrl + Shift + @` キーから bash ターミナルを起動し、Git を導入する
 
 ```bash
-# pacman パッケージマネージャで msys2 コアシステム更新
+# ついでに pacman パッケージマネージャで msys2 コアシステムを更新しておく
 $ pacman -Suy
-
-# Git インストール
-$ pacman -S git
 
 # Git 設定
 $ git config --global user.name <username> # 好きなユーザ名を設定

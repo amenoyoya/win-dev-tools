@@ -13,11 +13,6 @@
   "editor.renderLineHighlight": "all", // 選択行を行番号含めすべてハイライト
   "editor.renderWhitespace": "all", // 半角スペースを常に表示
   "editor.snippetSuggestions": "top", // Emmet などのスニペット候補を優先して表示
-  // Git
-  "git.enabled": true,
-  "git.autorefresh": true,
-  "git.decorations.enabled": true,
-  "git.path": "C:\\tools\\msys64\\usr\\bin\\git.exe",
   // タブ幅 = 2 space の言語設定
   "[javascript]": {
     "editor.tabSize": 2
