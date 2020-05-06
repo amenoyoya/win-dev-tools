@@ -9,45 +9,70 @@ Windowsで開発するときの個人的コマンドラインツール詰め合�
 ## Setup
 
 ### Environment
-- OS: Windows 10 Pro x64
+- OS: Windows 10 64bit
 - Editor: VSCode
-    - https://code.visualstudio.com/
-- CLI: Git bash (Git for Windows)
-    - https://gitforwindows.org/
+- PackageManager: Chocolatey
+- CLI: msys2 bash
 
-### Preparation
-- VSCode と Git for Windows をインストール
-    - エクスプローラ拡張も有効化しておくと便利
+### 各種ソフトウェアの導入
+`Win + X` |> `A` キー => 管理者権限 PowerShell 起動
+
+```powershell
+# Windows用パッケージマネージャとして chocolatey 導入
+> Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# chocolatey バージョン確認
+> choco -v
+0.10.15
+
+# VSCode インストール
+> choco install -y vscode
+## => "C:\Program Files\Microsoft VS Code\" にインストールされる
+
+# msys2 インストール
+> chovo isntall -y msys2
+## => "C:\tools\msys64\" にインストールされる
+```
+
+### PATH 設定
+- `Win + Pause/Break` > システムの詳細設定 > 環境設定
+    - ユーザの環境変数を以下の通り設定
+        - `HOME`:
+            - `C:\Users\<user>` (`<user>` はユーザ名)
+        - `MSYS2_PATH_TYPE`:
+            - `inhrerit` (msys2 bash で Windows の PATH 環境変数を引き継ぐ)
+        - `PATH`: 以下を追加
+            - `C:\tools\msys64\usr\bin`
+            - `C:\tools\msys64\mingw64\bin`
+
+### VSCode 設定
 - VSCodeプラグインをインストール
     - Japanese Language Pack
     - Markdown Preview Enhanced
 - VSCode設定(`Ctrl + ,`)
-    - ※ 直接`settings.json`を開いて [vscode-settings.jsonc](./vscode-settings.jsonc)の内容をコピペしてもOK
-    - `files.eol`:
-        - 改行設定 => `\n` (Unix系ツールは`\r`が入っていると動作がおかしくなるものが多いため)
-    - `terminal.integrated.shell.windows`:
-        - 内部ターミナル => `C:\\Program Files\\Git\\bin\\bash.exe` (Git for Windows のインストール先ディレクトリ)
+    - 直接 `settings.json` を開いて [vscode-settings.jsonc](./vscode-settings.jsonc) の内容をコピペする
 
-#### Git bash 起動時にホームディレクトリの .bashrc を読み込むように設定
-`C:\Program Files\Git\etc\bash.bashrc` に以下の設定を追加
+### Git 導入
+VSCode で `Ctrl + Shift + @` キーから bash ターミナルを起動し、Git を導入する
 
 ```bash
-# System-wide bashrc file
-if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-fi
-```
+# pacman パッケージマネージャで msys2 コアシステム更新
+$ pacman -Suy
 
-#### Git設定
-Git bash で以下の設定を行う
+# Git インストール
+$ pacman -S git
 
-```bash
+# Git 設定
 $ git config --global user.name <username> # 好きなユーザ名を設定
 $ git config --global user.email <mail@example.dev> # 自分のメールアドレスを設定
-$ git config --global core.editor code # VSCodeをデフォルトエディターに
+$ git config --global core.editor 'code -w' # VSCodeをデフォルトエディターに（-w オプションをつけないとエディタの終了を待ってくれない）
 $ git config --global core.autoCRLF false # 改行コードを勝手に修正するのを無効化
 $ git config --global core.quotepath false # 日本語ファイル名等をquoteするのを無効化
 ```
+
+***
+
+## Windows開発環境構築
 
 ### Installation
 ```bash
@@ -62,10 +87,10 @@ $ git clone https://github.com/amenoyoya/win-dev-tools.git
 `Win + Pause/Break`キー => システム設定のコントロールパネル起動
 
 - システムの詳細設定 > 環境変数
-    - システム環境変数の`PATH`に以下のパスを追加
-        1. `C:\win-dev-tools\bin`
-        2. `C:\win-dev-tools\bin\nodejs`
-        3. `C:\win-dev-tools\bin\php-7.3.8`
+    - ユーザ環境変数の`PATH`に以下のパスを追加
+        - `C:\win-dev-tools\bin`
+        - `C:\win-dev-tools\bin\nodejs`
+        - `C:\win-dev-tools\bin\php-7.3.8`
 
 ### Julia + Python(Anaconda) 環境構築
 Julia と PyCall（Python／Anaconda3）とインストールする
@@ -73,28 +98,19 @@ Julia と PyCall（Python／Anaconda3）とインストールする
 `Win + X`キー |> `A`キー => 管理者権限のPowerShell起動
 
 ```powershell
-# Windows用パッケージマネージャとして chocolatey 導入
-> Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-
-# chocolatey バージョン確認
-> choco -v
-0.10.15
-
-# julia インストール
+# Julia インストール
 > choco install -y julia
-# => /c/ProgramData/chocolatey/bin/julia.exe にインストールされる
+# => C:\ProgramData\chocolatey\bin\julia.exe にインストールされる
 
 # PyCall パッケージインストール
 > julia -e 'using Pkg; Pkg.add("PyCall");'
 ```
 
-### bash設定
-Git bash で以下を実行
-
+### bash 設定
 ```bash
 # C:\users\<User>\.bashrc に以下の設定を記述
 # - Anaconda3アクティベーションスクリプト読み込み: Pythonを使用可能に
-# - プロンプトにGitブランチを表示
+# - プロンプトに conda環境と Gitブランチ を表示
 ## ヒアドキュメント用のアンカー(EOS)を("EOS" or 'EOS' or \EOS)にするとドキュメント内の変数展開をエスケープしてくれる
 $ tee ~/.bashrc <<\EOS
 source ~/.julia/conda/3/Scripts/activate

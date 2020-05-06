@@ -121,40 +121,27 @@ vhostを有効化するために、`Win + X` |> `A` キー => 管理者権限Pow
 
 ***
 
-## msys2
+## GNU C++ Compiler
 
 Windows上で C++ 製の OSSツールを使いたい場合、ソースコードからのビルドが必要になることが多々ある
 
 そういった場合、VisualStudio を使うより、msys2 のような GNU 系コンパイラ環境を使った方が良いことが多い
 
 ### Installation
-`Win + X` |> `A` => 管理者権限PowerShell起動
-
-```powershell
-# chocolatey で msys2 インストール
-> choco install -y msys2
-
-## => 64bit環境の場合 C:\tools\msys64\ にインストールされる
-## => PATHは自動的に通されるため、PowerShellを開きなおす
-```
-
-### pgModeler のビルド
-動作確認を兼ねて、OSSのデータモデリングツールである pgModeler をビルドしてみる
-
-```powershell
-# msys2/mingw64 起動
-> mingw64
-```
-
 ```bash
 # pacman パッケージマネージャで msys2 コアシステム更新
 $ pacman -Suy
 
 # ビルドに必要なパッケージをインストール
-$ pacman -S git base-devel mingw-w64-x86_64-make mingw-w64-x86_64-gcc mingw-w64-x86_64-postgresql mingw-w64-x86_64-qt5
+$ pacman -S base-devel mingw-w64-x86_64-make mingw-w64-x86_64-gcc mingw-w64-x86_64-postgresql mingw-w64-x86_64-qt5
 
 ## => 3GB 近くあるためしばらく待機
+```
 
+### pgModeler のビルド
+動作確認を兼ねて、OSSのデータモデリングツールである pgModeler をビルドしてみる
+
+```bash
 # GitHub から pgModeler ソースコード取得
 $ git clone https://github.com/pgmodeler/pgmodeler.git
 $ cd pgmodeler/
