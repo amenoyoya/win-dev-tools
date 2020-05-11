@@ -12,6 +12,9 @@ WSL2 を使うと、VirtualBox + Vagrant や VMware を使うよりシームレ�
 - Guest OS: Ubuntu 18.04
     - Docker: 19.03.8
         - docker-compose: 1.24.0
+    - nodenv: 1.3.2
+        - Node.js: 10.17.0
+        - Yarn package manager: 1.22.4
 
 ### Setup
 まず、WSL1 を導入し、その上に Ubuntu 18.04 をインストールする
@@ -64,10 +67,32 @@ $ source ~/.bashrc
 ## 残ってしまった場合は直接ディレクトリ削除
 # $ sudo rm -rf /home/linuxbrew/
 
-# Linuxbrew を使って Node.js インストール
-$ brew install node
-## yarn パッケージマネージャ導入
-$ npm i -g yarn
+# Linuxbrew を使って nodenv 導入
+## nodenv を使うことで、複数バージョンの Node.js 環境を構築できる
+$ brew install nodenv
+## nodenv-yarn-install プラグイン導入: nodenv install 時に yarn もインストールする
+$ mkdir -p "$(nodenv root)/plugins"
+$ git clone https://github.com/pine/nodenv-yarn-install.git "$(nodenv root)/plugins/nodenv-yarn-install"
+
+# あらかじめ nodenv / Node.js 環境の PATH を通しておく
+$ echo 'export PATH="$HOME/.nodenv/shims:$HOME/.yarn/bin:$PATH"' >> ~/.bashrc
+$ source ~/.bashrc
+
+# Node.js 10.17.0 インストール
+$ nodenv install 10.17.0
+
+# Node.js 10.17.0 に切り替え
+$ nodenv global 10.17.0
+
+# 現在選択されているバージョンを確認
+$ nodenv versions
+* 10.17.0 (set by /home/user/.nodenv/version)
+
+$ node -v
+v10.17.0
+
+$ yarn -v
+1.22.4
 ```
 
 ### WSL2 へのアップグレード
